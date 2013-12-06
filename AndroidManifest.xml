@@ -19,7 +19,7 @@
             android:required="true" />
         
         <activity
-            android:name="com.carltondennis.glass.batterylevel.MainActivity"
+            android:name="com.intertrode.glass.status.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
