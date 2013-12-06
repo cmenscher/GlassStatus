@@ -3,7 +3,7 @@ GlassStatus
 
 Voice-activated Google Glass status screen (Battery level, Network, Uptime)
 
-This simple little app is based on Alex Dennis's Glass Battery Level app:
+This simple little app is based on [Alex Dennis's](https://github.com/alexdennis) Glass Battery Level app:
 
 https://github.com/alexdennis/GlassBatteryLevel
 
