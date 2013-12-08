@@ -17,16 +17,14 @@ import com.google.android.glass.app.Card;
 
 public class MainActivity extends Activity {
 	public static boolean isNetworkConnected(Context c) {
-		ConnectivityManager conManager = (ConnectivityManager) c
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager conManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = conManager.getActiveNetworkInfo();
-		return (netInfo != null && (netInfo.isConnected() && netInfo
-				.isAvailable()));
+
+		return (netInfo != null && (netInfo.isConnected() && netInfo.isAvailable()));
 	}
 
 	public static NetworkInfo networkInfo(Context c) {
-		ConnectivityManager conManager = (ConnectivityManager) c
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager conManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = conManager.getActiveNetworkInfo();
 		return netInfo;
 	}
@@ -34,20 +32,21 @@ public class MainActivity extends Activity {
 	private BroadcastReceiver mGlassStatusReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context c, Intent i) {
+			
+			/* Battery Level */
 			int level = i.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 			int scale = i.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 			float batteryPct = (level / (float) scale) * 100;
 			String cardText = "Battery Level: " + Float.toString(batteryPct)
 					+ "%\n";
 
-			String networkState = "No network.";
+			/* Network Status */
+			String networkState = "Network: OFFLINE\n";
 			if (MainActivity.isNetworkConnected(c)) {
-				networkState = networkInfo(c).getTypeName();
-			} else {
-				networkState = "None: " + networkInfo(c).getReason();
-			}
-			networkState = "Network: " + networkState + "\n";
+				networkState = "Network: " + networkInfo(c).getTypeName() + "\n";
+			}			
 			
+			/* Uptime */
 			Long uptimeMillis;
 			String uptimeText = "\n";
 			uptimeMillis = SystemClock.uptimeMillis();
@@ -84,6 +83,7 @@ public class MainActivity extends Activity {
 			
 			uptimeText = "Uptime: " + days + " " + dayLabel + " " + hoursLabel + ":" + minutesLabel + ":" + secondsLabel;
 
+			/* Create output */
 			Card card = new Card(c);
 			cardText = "*** GLASS STATUS ***\n" + cardText + networkState + uptimeText;
 			card.setText(cardText);
@@ -96,8 +96,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		registerReceiver(mGlassStatusReceiver, new IntentFilter(
-				Intent.ACTION_BATTERY_CHANGED));
+		registerReceiver(mGlassStatusReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 	}
 	
 	@Override
